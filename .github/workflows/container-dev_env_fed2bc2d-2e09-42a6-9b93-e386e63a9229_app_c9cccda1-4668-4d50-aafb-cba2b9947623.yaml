@@ -74,7 +74,7 @@ jobs:
           format: 'json' # ${{env.TRIVY_RESULT_FORMAT}}
           output: ${{ env.IMAGE_TAG }}-trivy-result.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
-          ignore-unfixed: true
+          ignore-unfixed: false
           vuln-type: os,library
           severity: ${{env.SCAN_SEVERITY}}
           hide-progress: true
