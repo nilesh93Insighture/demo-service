@@ -71,7 +71,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-          format: ${{env.TRIVY_RESULT_FORMAT}}
+          format: 'json' # ${{env.TRIVY_RESULT_FORMAT}}
           output: ${{ env.IMAGE_TAG }}-trivy-result.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
           ignore-unfixed: true
