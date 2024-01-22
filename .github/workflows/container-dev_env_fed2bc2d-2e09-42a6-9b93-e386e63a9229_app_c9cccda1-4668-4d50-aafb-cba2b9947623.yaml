@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: docker.io/nj93/test-app
   DOCKER_FILE_PATH: Dockerfile
   DOCKER_BUILD_CONTEXT: .
-  SCAN_SEVERITY: CRITICAL
+  SCAN_SEVERITY: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
   TRIVY_SCAN_EXIT_CODE: '0'
   TRIVY_RESULT_FORMAT: json
   REPOSITORY_NAME: test-app
@@ -75,8 +75,8 @@ jobs:
           output: ${{ env.IMAGE_TAG }}-trivy-result.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
           ignore-unfixed: false
-          # vuln-type: os,library
-          # severity: ${{env.SCAN_SEVERITY}}
+          vuln-type: os,library
+          severity: ${{env.SCAN_SEVERITY}}
           hide-progress: true
         if: ${{ env.IMAGE_EXISTS_IN_ECR == 'false' }}
       - name: 'Run :: Upload Trivy Result To S3'
