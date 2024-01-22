@@ -17,7 +17,7 @@ env:
   DOCKER_BUILD_CONTEXT: .
   SCAN_SEVERITY: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
   TRIVY_SCAN_EXIT_CODE: '0'
-  TRIVY_RESULT_FORMAT: json
+  TRIVY_RESULT_FORMAT: sarif
   REPOSITORY_NAME: test-app
   DEPLOY_STEP_SHOULD_DEPLOY: 'true'
 jobs:
@@ -74,7 +74,7 @@ jobs:
           format: ${{env.TRIVY_RESULT_FORMAT}}
           output: ${{ env.IMAGE_TAG }}-trivy-result.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
-          ignore-unfixed: false
+          # ignore-unfixed: false
           vuln-type: os,library
           severity: ${{env.SCAN_SEVERITY}}
           hide-progress: true
