@@ -72,7 +72,7 @@ jobs:
         with:
           image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           format: 'json' # ${{env.TRIVY_RESULT_FORMAT}}
-          output: ${{ env.IMAGE_TAG }}-trivy-result.json
+          # output: ${{ env.IMAGE_TAG }}-trivy-result.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
           ignore-unfixed: true
           vuln-type: os,library
