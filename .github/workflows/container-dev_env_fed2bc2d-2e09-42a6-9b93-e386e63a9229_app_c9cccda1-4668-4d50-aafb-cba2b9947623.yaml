@@ -21,7 +21,7 @@ env:
   REPOSITORY_NAME: test-app
   DEPLOY_STEP_SHOULD_DEPLOY: 'true'
 jobs:
-  build-and-push:
+  build-and-push: 
     name: Build And Push
     permissions: write-all
     runs-on: ubuntu-latest
