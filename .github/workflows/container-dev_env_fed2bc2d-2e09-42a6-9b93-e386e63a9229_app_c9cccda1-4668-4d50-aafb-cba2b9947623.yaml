@@ -26,20 +26,16 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - &ref_0
-        name: Start
+      - name: Start
         run: >-
           echo " Starting GitHub Action!" && echo "IMAGE_EXISTS_IN_ECR=false" >>
           $GITHUB_ENV
-      - &ref_1
-        name: 'Run :: Checkout repository'
+      - name: 'Run :: Checkout repository'
         uses: actions/checkout@v2
-      - &ref_2
-        name: 'Run :: Checkout Specific Commit'
+      - name: 'Run :: Checkout Specific Commit'
         if: ${{ github.event.client_payload.commitId != null }}
         run: git checkout ${{ github.event.client_payload.commitId }}
-      - &ref_3
-        name: 'Run :: Decoding Secrets 23f23fd2-fb10-4b6e-88f2-cb4ab0fbc4ab'
+      - name: 'Run :: Decoding Secrets 23f23fd2-fb10-4b6e-88f2-cb4ab0fbc4ab'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -105,10 +101,6 @@ jobs:
     needs:
       - build-and-push
     steps:
-      - *ref_0
-      - *ref_1
-      - *ref_2
-      - *ref_3
       - name: 'Run :: Deploy and Notify Resource Service'
         run: |2-
 
