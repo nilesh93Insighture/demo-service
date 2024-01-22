@@ -17,7 +17,7 @@ env:
   DOCKER_BUILD_CONTEXT: .
   SCAN_SEVERITY: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
   TRIVY_SCAN_EXIT_CODE: '0'
-  TRIVY_RESULT_FORMAT: json
+  TRIVY_RESULT_FORMAT: table
   REPOSITORY_NAME: test-app
   DEPLOY_STEP_SHOULD_DEPLOY: 'true'
 jobs:
@@ -82,6 +82,8 @@ jobs:
       - name: 'Run :: Upload Trivy Result To S3'
         run: |2-
               cat ${{ env.IMAGE_TAG }}-trivy-result.json
+              TRIVY_TABLE_FILE=${{ env.IMAGE_TAG }}-trivy-result.json
+              awk 'BEGIN {print "["} NR>2 {print "{"; for (i=1; i<=NF; i++) { gsub(" ", "", $i); gsub(":", "\":\"", $i); printf "\"%s\",", $i } print "}"; } END {print "]"}' "$TRIVY_TABLE_FILE" | jq '.'
               response=$(curl -X POST ${{ env.TRIVY_RESULT_UPLOAD_ENDPOINT }} -H "Authorization: ${{ env.SERVICE_ACC_ACCESS_TOKEN }}" -H "x-auth-by: sa" -H "x-organization-id: ${{ env.DEPLOYMENT_ORGANIZATION_ID }}" -H "x-project-id: ${{ env.DEPLOYMENT_PROJECT_ID }}" -H "x-environment-id: ${{ env.DEPLOYMENT_ENVIRONMENT_ID }}" -H "x-resource-id: ${{ env.DEPLOYMENT_APPLICATION_ID }}" -H "Content-Type: multipart/form-data" -F "file=@${{ env.IMAGE_TAG }}-trivy-result.json" -F "provider=aws" -F "resourceType=trivy-report" -F "cloudStoragePath=/${{ env.DEPLOYMENT_APPLICATION_ID }}/")
 
               if echo "$response" | grep -q '"success":true'; then
