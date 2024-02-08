@@ -5,8 +5,6 @@ name: >-
   push:
     branches:
       - main
-    paths:
-      - ./*
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_05450e5e-91a6-4503-8e74-0d6fcd377827
