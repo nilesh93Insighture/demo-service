@@ -88,7 +88,7 @@ jobs:
               # Minifying Json
               jq -c '.' ${{ env.IMAGE_TAG }}-trivy-result.json > ${{ env.IMAGE_TAG }}-trivy-result.min.json
               trivy_result=$(cat "${{ env.IMAGE_TAG }}-trivy-result.min.json")
-              echo "trivy_result: $trivy_result"
+              
 
               # Set the desired severity level
               desiredSeverity="${{ env.SCAN_SEVERITY }}"
@@ -130,6 +130,9 @@ jobs:
               fi
               
         if: ${{ env.ARE_TRIVY_RESULTS_EVALUATED == 'true' }}
+      - name: 'Fail Pipeline if Critical Vulnerabilities Found'
+        run: exit 1
+        if: ${{ env.STEPS_CAN_PROCEED == 'false' }}
       - name: 'Run :: Build, tag, and push image'
         run: docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
