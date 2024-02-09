@@ -5,6 +5,8 @@ name: >-
   push:
     branches:
       - main
+    paths:
+      - ./*
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_05450e5e-91a6-4503-8e74-0d6fcd377827
@@ -39,7 +41,7 @@ jobs:
       - name: 'Run :: Checkout Specific Commit'
         if: ${{ github.event.client_payload.commitId != null }}
         run: git checkout ${{ github.event.client_payload.commitId }}
-      - name: 'Run :: Decoding Secrets 2ec4b0ca-e7bb-4a5e-ad89-00b79f259618'
+      - name: 'Run :: Decoding Secrets 45657199-55e3-4fff-ae96-5a85dc5e5eca'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -88,7 +90,6 @@ jobs:
               # Minifying Json
               jq -c '.' ${{ env.IMAGE_TAG }}-trivy-result.json > ${{ env.IMAGE_TAG }}-trivy-result.min.json
               trivy_result=$(cat "${{ env.IMAGE_TAG }}-trivy-result.min.json")
-              
 
               # Set the desired severity level
               desiredSeverity="${{ env.SCAN_SEVERITY }}"
@@ -109,6 +110,7 @@ jobs:
 
               if [ "$VULNERABILITY_COUNT" -gt 0 ]; then
                 echo "STEPS_CAN_PROCEED=false" >> $GITHUB_ENV
+                echo "VULNERABILITY_COUNT=$VULNERABILITY_COUNT" >> $GITHUB_ENV
               fi
               echo "ARE_TRIVY_RESULTS_EVALUATED=true" >> $GITHUB_ENV
               
@@ -130,9 +132,6 @@ jobs:
               fi
               
         if: ${{ env.ARE_TRIVY_RESULTS_EVALUATED == 'true' }}
-      - name: 'Fail Pipeline if Critical Vulnerabilities Found'
-        run: exit 1
-        if: ${{ env.STEPS_CAN_PROCEED == 'false' }}
       - name: 'Run :: Build, tag, and push image'
         run: docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
@@ -144,7 +143,7 @@ jobs:
       - build-and-push
     if: needs.build-and-push.outputs.stepsCanProceed == 'true'
     steps:
-      - name: 'Run :: Decoding Secrets c0e5a12a-b0b3-4f7b-8a6b-9bfb3c62346b'
+      - name: 'Run :: Decoding Secrets e29ccf31-e13f-4b41-aefa-60b287c96696'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
