@@ -5,6 +5,8 @@ name: >-
   push:
     branches:
       - main
+    paths:
+      - ./*
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_05450e5e-91a6-4503-8e74-0d6fcd377827
@@ -39,7 +41,7 @@ jobs:
       - name: 'Run :: Checkout Specific Commit'
         if: ${{ github.event.client_payload.commitId != null }}
         run: git checkout ${{ github.event.client_payload.commitId }}
-      - name: 'Run :: Decoding Secrets 45657199-55e3-4fff-ae96-5a85dc5e5eca'
+      - name: 'Run :: Decoding Secrets b4879af1-6ee5-4f10-bdc6-29e43cb98228'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -141,7 +143,7 @@ jobs:
       - build-and-push
     if: needs.build-and-push.outputs.stepsCanProceed == 'true'
     steps:
-      - name: 'Run :: Decoding Secrets e29ccf31-e13f-4b41-aefa-60b287c96696'
+      - name: 'Run :: Decoding Secrets 4845f507-4273-4bab-b897-74b4bc06b4fa'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
